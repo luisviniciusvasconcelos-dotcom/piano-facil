@@ -13,7 +13,54 @@
 :root{--bg:#0f1320;--panel:#181d2e;--line:#2a3150;--txt:#e8ecf8;--mut:#8b93b0;--R:#4da3ff;--L:#ffa94d;--ok:#3ddc84;--bad:#ff5c5c;--acc:#b98cff}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overscroll-behavior:none}
-body{display:flex;flex-direction:column;height:100dvh;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);user-select:none}
+body{position:relative;height:100dvh;overflow:hidden;user-select:none}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+.screen.hidden{display:none}
+#home{background:radial-gradient(1200px 600px at 50% -10%,#1d2547 0%,var(--bg) 60%)}
+.hHead{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 6px}
+.hHead h1{margin:0;font-size:22px}.hHead small{color:var(--mut)}
+.pill{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:5px 12px 5px 6px;font-size:13px;font-weight:600}
+.tabs{flex:1;overflow:auto;padding:4px 14px 20px}
+.tab.hidden{display:none}
+.tabbar{display:flex;border-top:1px solid var(--line);background:#121726}
+.tabbar button{flex:1;border:none;border-radius:0;background:none;padding:10px 4px 12px;color:var(--mut);font-size:12px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.tabbar button b{font-size:21px;font-weight:400}.tabbar button.on{color:var(--txt)}
+.planet{margin:18px 0 6px;border-radius:18px;padding:14px;display:flex;gap:12px;align-items:center;border:1px solid var(--line);background:linear-gradient(135deg,var(--pc,#333)33,transparent 70%),var(--panel)}
+.planet .orb{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;background:radial-gradient(circle at 35% 30%,#fff6,var(--pc) 60%);flex:none;box-shadow:0 0 22px var(--pc)}
+.planet h3{margin:0;font-size:17px}.planet p{margin:2px 0 0;color:var(--mut);font-size:13px}
+.planet .cnt{margin-left:auto;font-size:13px;color:var(--mut);white-space:nowrap}
+.planet.locked{opacity:.5}
+.path{position:relative;padding:4px 0}
+.node{display:flex;flex-direction:column;align-items:center;width:110px;margin:10px 0;position:relative}
+.node .dot{width:66px;height:66px;border-radius:50%;border:none;font-size:22px;font-weight:800;color:#0b0f1a;background:var(--pc);box-shadow:0 6px 0 rgba(0,0,0,.35),inset 0 -4px 0 rgba(0,0,0,.18)}
+.node.locked .dot{background:#2a3150;color:#7a809a;box-shadow:0 6px 0 #161b2c}
+.node.cur .dot{animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 6px 0 rgba(0,0,0,.35),0 0 0 0 var(--pc)}50%{box-shadow:0 6px 0 rgba(0,0,0,.35),0 0 0 12px transparent}}
+.node .lbl{font-size:12px;margin-top:8px;text-align:center;line-height:1.25}
+.node .st{color:#ffd166;font-size:12px;letter-spacing:1px;height:14px}
+.node .go{position:absolute;top:-24px;background:#fff;color:#111;font-size:11px;font-weight:800;padding:3px 8px;border-radius:8px}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0}
+.box h3{margin:0 0 10px;font-size:15px}
+.week{display:flex;justify-content:space-between;gap:4px}
+.day{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:var(--mut)}
+.day i{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:14px;background:conic-gradient(var(--ok) calc(var(--p)*1%),#2a3150 0);position:relative}
+.day i::after{content:'';position:absolute;inset:4px;border-radius:50%;background:var(--panel)}
+.day i span{position:relative;z-index:1}.day.today{color:var(--txt);font-weight:700}
+.big2{font-size:30px;font-weight:800}.mut{color:var(--mut);font-size:13px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat{background:#141a2b;border-radius:12px;padding:10px}.stat b{display:block;font-size:20px}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.badge{text-align:center;background:#141a2b;border-radius:12px;padding:10px 6px;font-size:11px;line-height:1.3}
+.badge b{display:block;font-size:28px;margin-bottom:4px}.badge.off{opacity:.35;filter:grayscale(1)}
+.goalRow{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 10px}
+.goalRow button{padding:6px 11px;font-size:13px}.goalRow button.on{background:#2c3560;border-color:var(--acc)}
+#backBtn{font-size:20px;padding:4px 12px}
+#lessonKb{display:block;margin:10px auto;max-width:100%}
+.tips{text-align:left;max-width:420px;margin:4px auto;font-size:14px;line-height:1.4}
+.tips div{background:rgba(255,255,255,.06);border-radius:10px;padding:8px 10px;margin:6px 0}
+.endBtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:100%;max-width:420px}
+.endBtns button{flex:1;min-width:120px;padding:12px}
+.endBtns .pri{background:var(--acc);color:#111;border:none;font-weight:800}
 button{font:inherit;color:inherit;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 10px;cursor:pointer}
 button:active{transform:scale(.96)}
 header{display:flex;gap:6px;padding:6px 8px;align-items:center}
@@ -30,7 +77,7 @@ header{display:flex;gap:6px;padding:6px 8px;align-items:center}
 canvas{display:block;width:100%;touch-action:none}
 #staff{height:140px;flex:none;border-bottom:1px solid var(--line)}
 #roll{flex:1;min-height:0}
-#msg{position:absolute;left:50%;top:12px;transform:translateX(-50%);background:rgba(24,29,46,.95);border:1px solid var(--line);padding:8px 14px;border-radius:12px;font-size:14px;max-width:90%;text-align:center;opacity:0;transition:opacity .3s;pointer-events:none;z-index:5}
+#msg{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 64px);transform:translateX(-50%);background:rgba(24,29,46,.95);border:1px solid var(--line);padding:8px 14px;border-radius:12px;font-size:14px;max-width:90%;text-align:center;opacity:0;transition:opacity .3s;pointer-events:none;z-index:20}
 #msg.show{opacity:1}
 #turn{position:absolute;left:8px;top:8px;font-size:15px;font-weight:700;background:rgba(15,19,32,.8);padding:4px 10px;border-radius:8px;display:none;z-index:4}
 footer{display:flex;gap:8px;align-items:center;padding:6px 10px 8px;font-size:13px;color:var(--mut)}
@@ -54,20 +101,37 @@ input[type=range]{accent-color:var(--acc)}
 .big{width:100%;padding:12px;margin-top:6px;background:#2c3560;font-weight:600}
 p.help{color:var(--mut);font-size:13px;line-height:1.45;margin:6px 0}
 .close{float:right;padding:4px 10px}
-#end{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(15,19,32,.85);z-index:6;flex-direction:column;gap:10px;text-align:center;padding:20px}
+#end{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(15,19,32,.92);z-index:6;flex-direction:column;gap:8px;text-align:center;padding:16px;overflow:auto}
 #end b{font-size:22px}
 @media (max-height:460px){header{padding:4px 8px}header button{padding:4px 9px}.chips{padding:0 8px 4px}.seg button,.chip{padding:3px 9px;font-size:13px}footer{padding:3px 10px 4px}}
 </style>
 </head>
 <body>
+<div id="home" class="screen">
+  <div class="hHead"><div><small>Vamos tocar? 🎹</small><h1>Piano Fácil</h1></div><div class="pill" id="todayPill"></div></div>
+  <div class="tabs">
+    <div class="tab" id="tab-trilha"></div>
+    <div class="tab hidden" id="tab-musicas">
+      <h2 style="margin:10px 2px">Músicas</h2>
+      <div id="songList"></div>
+      <button class="big" id="importBtn">＋ Importar arquivo MIDI (.mid)</button>
+      <input type="file" id="fileIn" accept=".mid,.midi,audio/midi,audio/x-midi" hidden>
+      <p class="help">Para aprender as suas músicas, baixe o arquivo MIDI de piano delas (busque “nome da música piano MIDI” — o MuseScore, por exemplo, permite baixar MIDI) e importe aqui. O app separa sozinho mão direita e mão esquerda e calcula o nível.</p>
+    </div>
+    <div class="tab hidden" id="tab-prog"></div>
+  </div>
+  <nav class="tabbar"><button data-tab="trilha" class="on"><b>🪐</b>Trilha</button><button data-tab="musicas"><b>🎵</b>Músicas</button><button data-tab="prog"><b>🔥</b>Progresso</button></nav>
+</div>
+<div id="player" class="screen hidden">
 <header>
-  <button class="song" id="songBtn">🎵 <span id="songName">—</span> ▾</button>
+  <button id="backBtn" title="Voltar">‹</button>
+  <div class="song" id="songName">—</div>
   <button id="restartBtn" title="Recomeçar">⟲</button>
   <button id="playBtn" title="Tocar/Pausar">▶</button>
   <button id="setBtn" title="Ajustes">⚙</button>
 </header>
-<div class="chips">
-  <div class="seg" id="modeSeg"><button data-v="watch">👀 Assistir</button><button data-v="wait">⏸ Esperar</button></div>
+<div class="chips" id="chips">
+  <div class="seg" id="modeSeg"><button data-v="watch">👀 Assistir</button><button data-v="wait">⏸ Esperar</button><button data-v="rhythm">🥁 Ritmo</button></div>
   <div class="seg" id="handSeg"><button data-v="B">Ambas</button><button data-v="R">Direita</button><button data-v="L">Esquerda</button></div>
   <button class="chip" id="micBtn">🎤 Microfone</button>
   <button class="chip" id="speedBtn">🐢 70%</button>
@@ -78,18 +142,19 @@ p.help{color:var(--mut);font-size:13px;line-height:1.45;margin:6px 0}
   <canvas id="staff"></canvas>
   <canvas id="roll"></canvas>
   <div id="turn"></div>
-  <div id="msg"></div>
-  <div id="end"><b id="endTitle">Fim!</b><div id="endTxt"></div><button class="big" id="againBtn" style="max-width:260px">Tocar de novo</button></div>
+  <div id="end"><b id="endTitle">Fim!</b><div id="endTxt"></div><div class="tips" id="endTips"></div><div class="endBtns"><button id="againBtn">↺ De novo</button><button class="pri" id="nextBtn">Próxima lição ›</button></div><button id="mapBtn" style="background:none;border:none;color:var(--mut)">Voltar</button></div>
 </div>
 <footer><div id="seekWrap"><div id="loopBar"></div><input type="range" id="seek" min="0" max="100" step="0.01" value="0"></div><span id="info">0:00</span></footer>
+</div>
 
-<div class="sheet hidden" id="songSheet"><div class="card">
-  <button class="close" data-close>✕</button>
-  <h2>Músicas</h2>
-  <div id="songList"></div>
-  <button class="big" id="importBtn">＋ Importar arquivo MIDI (.mid)</button>
-  <input type="file" id="fileIn" accept=".mid,.midi,audio/midi,audio/x-midi" hidden>
-  <p class="help">Para aprender as suas músicas, baixe o arquivo MIDI de piano delas (busque “nome da música piano MIDI” — o MuseScore, por exemplo, permite baixar MIDI) e importe aqui. O app separa sozinho mão direita e mão esquerda.</p>
+<div class="sheet hidden" id="introSheet"><div class="card" style="text-align:center">
+  <div id="introPlanet" class="mut"></div>
+  <h2 id="introTitle" style="margin:6px 0 8px;font-size:21px"></h2>
+  <p id="introText" style="line-height:1.5;margin:0 0 6px;text-align:left"></p>
+  <svg id="lessonKb"></svg>
+  <p id="introHow" class="help" style="text-align:left"></p>
+  <button class="big" id="introMic">🎤 Ligar microfone</button>
+  <button class="big" id="introGo" style="background:var(--acc);color:#111;font-size:16px">Começar ▶</button>
 </div></div>
 
 <div class="sheet hidden" id="setSheet"><div class="card">
@@ -102,15 +167,18 @@ p.help{color:var(--mut);font-size:13px;line-height:1.45;margin:6px 0}
   <div class="row"><label for="cOther">Tocar a outra mão<small>Ao treinar uma mão, o app toca a outra para acompanhar</small></label><input type="checkbox" id="cOther" checked></div>
   <div class="row"><label for="cMetro">Metrônomo<small>Clique no tempo da música (mais forte no 1º tempo)</small></label><input type="checkbox" id="cMetro"></div>
   <div class="row"><label for="cProg">Treino progressivo<small>No modo Esperar com trecho marcado: cada volta sem erro sobe 5% a velocidade</small></label><input type="checkbox" id="cProg"></div>
+  <div class="row"><label for="cStrict">Microfone rigoroso<small>Exige a nota na altura exata (ideal para piano afinado e lugar silencioso)</small></label><input type="checkbox" id="cStrict" checked></div>
   <div class="row"><label>Sensibilidade do microfone <small>Aumente se ele não estiver ouvindo suas notas</small></label><input type="range" id="sens" min="1" max="10" step="1" value="6" style="width:40%"></div>
   <h3>Como usar</h3>
   <p class="help"><b>Cores:</b> <span style="color:var(--R)">azul = mão direita</span>, <span style="color:var(--L)">laranja = mão esquerda</span>. Toque a tecla quando o bloco encostar na linha.</p>
+  <p class="help"><b>Ritmo:</b> a música não para; cada nota recebe Perfeito, Bom, Adiantado ou Atrasado conforme o seu tempo.</p>
   <p class="help"><b>Esperar:</b> a música para em cada nota até você tocá‑la certo (pelo microfone ou tocando na tecla da tela). Comece assim, com uma mão de cada vez.</p>
   <p class="help"><b>Microfone:</b> funciona melhor com notas uma de cada vez e o celular perto do piano, em ambiente silencioso. Com o microfone ligado, o app não toca as notas que são sua vez (para não ouvir a si mesmo). Acordes podem ser tocados nota por nota.</p>
   <p class="help"><b>🔁 Trecho:</b> toque uma vez para marcar o início, outra para marcar o fim — o app repete só essa parte. Toque de novo para desmarcar.</p>
   <p class="help"><b>Dica:</b> deixe o celular deitado (horizontal) para as teclas ficarem maiores.</p>
 </div></div>
 
+<div id="msg"></div>
 <script>
 "use strict";
 const $=s=>document.querySelector(s);
@@ -129,7 +197,7 @@ function finalize(s){s.notes.sort((a,b)=>a.start-b.start||a.midi-b.midi);
   const sc=nps+span/12;s.level=sc<4?1:sc<8?2:3;s.bpm=s.bpm||100;return s;}
 function firstIdx(t){const a=S.cur.notes,lim=t-S.cur.maxDur-0.4;let lo=0,hi=a.length;while(lo<hi){const m=(lo+hi)>>1;if(a[m].start<lim)lo=m+1;else hi=m}return lo}
 function buildSong(title,bpm,rh,lh){const sp=60/bpm,notes=[];
-  const add=(str,hand)=>{let t=0;for(const tok of str.trim().split(/\s+/)){const i=tok.lastIndexOf(':');
+  const add=(str,hand)=>{let t=0;if(!str||!str.trim())return;for(const tok of str.trim().split(/\s+/)){const i=tok.lastIndexOf(':');
     const n=tok.slice(0,i),du=parseFloat(tok.slice(i+1));
     if(n!=='r')for(const x of n.split('+'))notes.push({midi:pn(x),start:t*sp,dur:du*sp*0.92,hand});t+=du;}};
   add(rh,'R');if(lh)add(lh,'L');return finalize({title,notes,builtin:true,bpm});}
@@ -147,6 +215,8 @@ const BUILTIN=[
   'E5:1 D#5:1 E5:1 D#5:1 E5:1 B4:1 D5:1 C5:1 A4:3 C4:1 E4:1 A4:1 B4:3 E4:1 G#4:1 B4:1 C5:3 E4:1 E5:1 D#5:1 E5:1 D#5:1 E5:1 B4:1 D5:1 C5:1 A4:3 C4:1 E4:1 A4:1 B4:3 E4:1 C5:1 B4:1 A4:4',
   'r:8 A2:1 E3:1 A3:1 r:3 E2:1 E3:1 G#3:1 r:3 A2:1 E3:1 A3:1 r:9 A2:1 E3:1 A3:1 r:3 E2:1 E3:1 G#3:1 r:3 A2:1 E3:1 A3:2'),
 ];
+
+const SONG={estrela:BUILTIN[0],ode:BUILTIN[1],parabens:BUILTIN[2],elise:BUILTIN[3]};
 
 /* ---------- Leitor de MIDI ---------- */
 function parseMidi(buf,title){
@@ -197,20 +267,22 @@ function parseMidi(buf,title){
 /* ---------- Estado ---------- */
 const S={songs:[],cur:null,t:-2,playing:false,mode:'wait',hand:'R',speed:0.7,autoOther:true,sound:true,names:true,staff:true,
   mic:false,sens:6,groups:[],gi:0,waiting:false,hits:0,miss:0,flash:{},lastTs:0,keys:null,
-  combo:0,maxCombo:0,best:{},loopA:null,loopB:null,metro:false,prog:false,parts:[],passMiss:0,passHits:0,laps:0};
+  combo:0,maxCombo:0,best:{},loopA:null,loopB:null,metro:false,prog:false,parts:[],passMiss:0,passHits:0,laps:0,
+  lesson:null,backup:null,done:{},log:{},goal:{days:3,min:10},rec:{hits:0,combo:0,imports:0},badges:{},strict:true,run:null,fb:null,lastSong:0};
 const LS='pianoFacil.v1';
 function save(){try{localStorage.setItem(LS,JSON.stringify({imported:S.songs.filter(s=>!s.builtin).map(s=>({title:s.title,n:s.notes.map(n=>[n.midi,+n.start.toFixed(3),+n.dur.toFixed(3),n.hand])})),
-  cur:S.songs.indexOf(S.cur),best:S.best,metro:S.metro,prog:S.prog,mode:S.mode,hand:S.hand,speed:S.speed,names:S.names,staff:S.staff,sound:S.sound,autoOther:S.autoOther,sens:S.sens}))}catch(e){}}
+  cur:S.lastSong,done:S.done,log:S.log,goal:S.goal,rec:S.rec,badges:S.badges,strict:S.strict,best:S.best,metro:S.metro,prog:S.prog,mode:S.mode,hand:S.hand,speed:S.speed,names:S.names,staff:S.staff,sound:S.sound,autoOther:S.autoOther,sens:S.sens}))}catch(e){}}
 function load(){S.songs=BUILTIN.map(f=>f());let st=null;try{st=JSON.parse(localStorage.getItem(LS)||'null')}catch(e){}
   if(st){(st.imported||[]).forEach(s=>S.songs.push(finalize({title:s.title,notes:s.n.map(a=>({midi:a[0],start:a[1],dur:a[2],hand:a[3]}))})));
-    for(const k of['mode','hand','speed','names','staff','sound','autoOther','sens','best','metro','prog'])if(st[k]!==undefined)S[k]=st[k];}
-  selectSong(S.songs[(st&&st.cur>=0&&st.cur<S.songs.length)?st.cur:0]);}
+    for(const k of['mode','hand','speed','names','staff','sound','autoOther','sens','best','metro','prog','done','log','goal','rec','badges','strict'])if(st[k]!==undefined)S[k]=st[k];}
+  S.lastSong=(st&&st.cur>=0&&st.cur<S.songs.length)?st.cur:0;selectSong(S.songs[S.lastSong]);}
 
 const active=n=>S.hand==='B'||n.hand===S.hand;
 function computeGroups(){const g=[];for(const n of S.cur.notes){if(!active(n))continue;const l=g[g.length-1];
   if(l&&n.start-l.time<0.06)l.notes.push(n);else g.push({time:n.start,notes:[n],hit:new Set()})}S.groups=g;seek(S.t)}
-function seek(t){S.t=t;S.groups.forEach(g=>g.hit.clear());let i=S.groups.findIndex(g=>g.time>=t-1e-6);S.gi=i<0?S.groups.length:i;S.waiting=false;}
-function selectSong(s){S.cur=s;S.playing=false;S.hits=S.miss=0;S.combo=S.maxCombo=0;S.loopA=S.loopB=null;$('#songName').textContent=s.title;
+function seek(t){S.t=t;S.groups.forEach(g=>g.hit.clear());S.cur.notes.forEach(n=>{if(n.start>=t-0.01){n._hit=false;n._miss=false}});let i=S.groups.findIndex(g=>g.time>=t-1e-6);S.gi=i<0?S.groups.length:i;S.waiting=false;}
+function newRun(){S.run={missNote:{},missHand:{R:0,L:0},deltas:[],neighbor:0,perfect:0}}
+function selectSong(s){S.cur=s;S.playing=false;S.hits=S.miss=0;S.combo=S.maxCombo=0;S.loopA=S.loopB=null;newRun();if(!S.lesson&&S.songs.indexOf(s)>=0)S.lastSong=S.songs.indexOf(s);$('#songName').textContent=s.title;
   if(!S.cur.notes.some(n=>n.hand===S.hand)&&S.hand!=='B')S.hand='B';
   S.t=-2;computeGroups();layoutKeys();$('#end').style.display='none';syncUI();save();}
 
@@ -258,14 +330,24 @@ function micTick(){if(!analyser)return;if((M.frame++&1))return;analyser.getFloat
 function emit(m,now){if(m===M.lastEmit&&now-M.lastEmitAt<120)return;M.lastEmit=m;M.lastEmitAt=now;onHit(m,'mic')}
 
 /* ---------- Acertos ---------- */
-function onHit(m,src){const now=performance.now();let ok=false,show=m;
-  const match=(a,b)=>src==='tap'?a===b:(a%12===b%12&&Math.abs(a-b)<=12);
+function matchMic(a,b){if(src_==='tap')return a===b;if(!S.strict||b<48)return a%12===b%12&&Math.abs(a-b)<=12;return a===b}
+let src_='tap';
+function onHit(m,src){const now=performance.now();let ok=false,show=m;src_=src;const match=matchMic;
   if(S.mode==='wait'){const g=S.groups[S.gi];
-    if(g&&g.time-S.t<0.45){const i=g.notes.findIndex(n=>!g.hit.has(n)&&match(m,n.midi));
-      if(i>=0){ok=true;show=g.notes[i].midi;g.hit.add(g.notes[i]);if(g.hit.size===g.notes.length){S.gi++;S.waiting=false}}}}
+    if(g&&g.time-S.t<0.45){const pend=g.notes.filter(n=>!g.hit.has(n));const n=pend.find(n=>match(m,n.midi));
+      if(n){ok=true;show=n.midi;g.hit.add(n);if(g.hit.size===g.notes.length){S.gi++;S.waiting=false}}
+      else if(pend.length){const e=pend.reduce((a,b)=>Math.abs(b.midi-m)<Math.abs(a.midi-m)?b:a);logMiss(e,m)}}}
+  else if(S.mode==='rhythm'){const win=0.3*S.speed;let best=null;
+    for(let i=firstIdx(S.t-1);i<S.cur.notes.length;i++){const n=S.cur.notes[i];if(n.start>S.t+win)break;
+      if(!active(n)||n._hit||n._miss||Math.abs(S.t-n.start)>win||!match(m,n.midi))continue;if(!best||Math.abs(S.t-n.start)<Math.abs(S.t-best.start))best=n}
+    if(best){ok=true;show=best.midi;best._hit=true;const d=(S.t-best.start)/S.speed;S.run.deltas.push(d);
+      const ad=Math.abs(d);if(ad<0.1){S.run.perfect++;fbk('Perfeito!','#3ddc84')}else if(ad<0.2)fbk('Bom','#9be7c4');else fbk(d<0?'Adiantado':'Atrasado','#ffd166')}
+    else fbk('Nota errada','#ff5c5c')}
   else{const n=S.cur.notes.find(n=>active(n)&&match(m,n.midi)&&S.t>=n.start-0.3&&S.t<=n.start+Math.max(n.dur,0.35));if(n){ok=true;show=n.midi}}
-  if(ok){S.hits++;S.passHits++;S.combo++;S.maxCombo=Math.max(S.maxCombo,S.combo);burst(show)}else{S.miss++;S.passMiss++;S.combo=0}
+  if(ok){S.hits++;S.passHits++;S.combo++;S.maxCombo=Math.max(S.maxCombo,S.combo);S.rec.hits++;if(S.combo>S.rec.combo)S.rec.combo=S.combo;burst(show)}else{S.miss++;S.passMiss++;S.combo=0}
   S.flash[show]={ok,until:now+350};}
+function logMiss(n,played){const r=S.run;r.missNote[n.midi]=(r.missNote[n.midi]||0)+1;r.missHand[n.hand]++;if(played!==undefined&&played!==n.midi&&Math.abs(played-n.midi)<=2)r.neighbor++}
+function fbk(t,c){S.fb={t,c,until:performance.now()+600}}
 function burst(m){const k=S.keys&&S.keys.geo[m];if(!k)return;const cx=k.x+k.w/2,y=H-kbH();const col=S.cur.notes.find(n=>n.midi===m);const c=col?COL[col.hand]:'#3ddc84';
   for(let i=0;i<14;i++){const a=Math.PI*(1+Math.random()),v=60+Math.random()*160;S.parts.push({x:cx,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:1,c:Math.random()<.5?c:'#ffffff'})}}
 
@@ -322,6 +404,7 @@ function drawRoll(){const c=rc;c.setTransform(DPR,0,0,DPR,0,0);c.fillStyle='#0f1
   if(S.playing&&t<0&&t>-1.95){const k=Math.ceil(-t*1.55);c.fillStyle='rgba(232,236,248,'+(0.25+0.6*((-t*1.55)%1))+')';c.font='800 '+Math.min(90,hitY*0.45)+'px system-ui';c.textAlign='center';c.textBaseline='middle';c.fillText(k>0?String(k):'',W/2,hitY/2)}
   // sequência de acertos
   if(S.combo>=5){c.fillStyle='#ffd166';c.font='800 18px system-ui';c.textAlign='right';c.textBaseline='top';c.fillText('🔥 '+S.combo+' seguidas',W-10,S.mic?40:10)}
+  if(S.fb&&S.fb.until>now){const a=(S.fb.until-now)/600;c.globalAlpha=Math.min(1,a*1.5);c.fillStyle=S.fb.c;c.font='800 '+Math.min(30,W/14)+'px system-ui';c.textAlign='center';c.textBaseline='bottom';c.fillText(S.fb.t,W/2,hitY-24-(1-a)*20);c.globalAlpha=1}
   // teclas que soam agora
   const lit={};for(let i=i0;i<S.cur.notes.length;i++){const n=S.cur.notes[i];if(n.start>t)break;if(t<n.start+n.dur&&(active(n)||S.autoOther))lit[n.midi]=n.hand}
   if(S.mode==='wait')pending.forEach(n=>lit[n.midi]=lit[n.midi]||'P'+n.hand);
@@ -373,11 +456,13 @@ function step(dt){let nt=S.t+dt*S.speed;
   if(S.sound&&AC)for(let i=firstIdx(S.t);i<S.cur.notes.length;i++){const n=S.cur.notes[i];if(n.start>nt)break;if(n.start>S.t){const act=active(n);
     if(act&&(S.mode==='wait'||S.mic))continue;if(!act&&!S.autoOther)continue;playNote(n.midi,n.dur/S.speed)}}
   if(S.metro&&AC&&nt>=0){const bl=60/S.cur.bpm,b0=Math.floor(S.t/bl),b1=Math.floor(nt/bl);if(b1>b0||(S.t<0&&nt>=0))click(b1%4===0)}
+  if(S.mode==='rhythm'){const win=0.3*S.speed;for(let i=firstIdx(S.t-1);i<S.cur.notes.length;i++){const n=S.cur.notes[i];if(n.start>nt-win)break;
+    if(active(n)&&!n._hit&&!n._miss&&n.start>=-0.01){n._miss=true;S.miss++;S.passMiss++;S.combo=0;logMiss(n);fbk('Faltou '+nm(n.midi),'#ff5c5c')}}}
   S.t=nt;
   if(S.loopA!==null&&S.loopB!==null&&S.t>=S.loopB){lapDone();seek(S.loopA);return}
   if(S.t>S.cur.duration+0.8){S.playing=false;syncUI();showEnd();relWake()}}
 function lapDone(){S.laps++;const tot=S.passHits+S.passMiss;
-  if(S.mode==='wait'&&tot){const pct=Math.round(S.passHits/tot*100);
+  if(S.mode!=='watch'&&tot){const pct=Math.round(S.passHits/tot*100);
     if(S.prog&&S.passMiss===0&&S.speed<1){S.speed=Math.min(1,+(S.speed+0.05).toFixed(2));syncUI();save();toast(`Perfeito! Velocidade subiu para ${Math.round(S.speed*100)}% 🚀`)}
     else toast(`Volta ${S.laps}: ${pct}% de acerto`+(S.passMiss?'':' — perfeito! 🎯'))}
   S.passHits=S.passMiss=0}
@@ -386,13 +471,38 @@ function click(strong){const now=AC.currentTime,o=AC.createOscillator(),g=AC.cre
   o.connect(g);g.connect(master);o.start(now);o.stop(now+0.08)}
 let wake=null;async function getWake(){try{if('wakeLock' in navigator&&!wake)wake=await navigator.wakeLock.request('screen')}catch(e){}}
 function relWake(){try{wake&&wake.release()}catch(e){}wake=null}
-function frame(ts){const dt=Math.min(0.1,(ts-(S.lastTs||ts))/1000);S.lastTs=ts;if(S.playing)step(dt);if(S.mic)micTick();drawRoll();drawStaff();hud();requestAnimationFrame(frame)}
+let saveAcc=0;function frame(ts){const dt=Math.min(0.1,(ts-(S.lastTs||ts))/1000);S.lastTs=ts;if(S.playing){step(dt);if(!document.hidden){const k=dayKey(new Date());S.log[k]=(S.log[k]||0)+dt;if((saveAcc+=dt)>5){saveAcc=0;save();checkBadges()}}}if(S.mic)micTick();drawRoll();drawStaff();hud();requestAnimationFrame(frame)}
 function stars(p){return p>=95?3:p>=80?2:p>=50?1:0}
-function showEnd(){$('#msg').classList.remove('show');const tot=S.hits+S.miss;const pct=tot?Math.round(S.hits/tot*100):0;
-  let rec=false;if(S.mode==='wait'&&tot){const k=S.cur.title,prev=S.best[k]||0;if(pct>prev){S.best[k]=pct;rec=prev>0;save()}}
-  $('#endTitle').textContent=S.mode==='wait'?'Música completa! 🎉':'Fim da música';
-  $('#endTxt').innerHTML=tot?`<div style="font-size:34px;letter-spacing:6px;color:#ffd166">${'★'.repeat(stars(pct))}<span style="opacity:.25">${'★'.repeat(3-stars(pct))}</span></div>Precisão ${pct}% · Acertos ${S.hits} · Erros ${S.miss}<br>Maior sequência: ${S.maxCombo}`+(rec?'<br><b style="color:#3ddc84;font-size:16px">Novo recorde!</b>':''):'Agora tente no modo Esperar, tocando junto.';$('#end').style.display='flex'}
-
+function showEnd(){$('#msg').classList.remove('show');const tot=S.hits+S.miss;const pct=tot?Math.round(S.hits/tot*100):0;const scored=S.mode!=='watch'&&tot>0;
+  let rec=false,html='';const L=S.lesson;
+  if(scored&&!L){const k=S.cur.title,prev=S.best[k]||0;if(pct>prev){S.best[k]=pct;rec=prev>0}}
+  let passed=false,nextL=null;
+  if(L&&scored){const prev=S.done[L.id]||0;passed=pct>=PASS;if(pct>prev){S.done[L.id]=pct;rec=prev>0}nextL=lessonAfter(L)}
+  save();checkBadges();
+  $('#endTitle').textContent=L?(passed?'Lição concluída! 🎉':scored?'Quase lá!':'Fim'):(scored?'Música completa! 🎉':'Fim da música');
+  html=scored?`<div style="font-size:34px;letter-spacing:6px;color:#ffd166">${'★'.repeat(stars(pct))}<span style="opacity:.25">${'★'.repeat(3-stars(pct))}</span></div>Precisão ${pct}% · Acertos ${S.hits} · Erros ${S.miss}<br>Maior sequência: ${S.maxCombo}`+(rec?'<br><b style="color:#3ddc84;font-size:16px">Novo recorde!</b>':''):'Agora tente no modo Esperar ou Ritmo, tocando junto.';
+  if(L&&scored&&!passed)html+=`<br><span class="mut">Faça ${PASS}% ou mais para liberar a próxima lição.</span>`;
+  $('#endTxt').innerHTML=html;
+  $('#endTips').innerHTML=scored?tips(pct).map(t=>`<div>${t}</div>`).join(''):'';
+  const nb=$('#nextBtn');nb.style.display=L&&passed&&nextL?'block':'none';nb.onclick=()=>openLesson(nextL);
+  $('#mapBtn').textContent=L?'‹ Voltar à trilha':'‹ Voltar às músicas';
+  $('#end').style.display='flex'}
+/* ---------- Tutor: dicas por regras ---------- */
+function where(m){const n=nm(m);if(!isBlack(m))return n;return `${n} (tecla preta entre ${nm(m-1)} e ${nm(m+1)})`}
+function tips(pct){const r=S.run,out=[];
+  const worst=Object.entries(r.missNote).sort((a,b)=>b[1]-a[1])[0];
+  if(pct>=95&&!worst)out.push(S.speed<1?`🚀 Perfeito! Suba a velocidade para ${Math.min(100,Math.round(S.speed*100)+10)}% e repita.`:'🏆 Impecável! Tente a próxima lição ou uma música mais difícil.');
+  if(worst&&worst[1]>=2)out.push(`🎯 A nota que mais escapou foi <b>${where(+worst[0])}</b> (${worst[1]}×). Antes de tocar, procure-a no teclado e olhe o nome no bloco.`);
+  if(S.hand==='B'&&r.missHand.L>r.missHand.R*1.5&&r.missHand.L>=3)out.push('✋ A mão esquerda errou mais. Treine-a sozinha (botão Esquerda) e depois junte as duas.');
+  else if(S.hand==='B'&&r.missHand.R>r.missHand.L*1.5&&r.missHand.R>=3)out.push('✋ A mão direita errou mais. Treine-a sozinha (botão Direita) antes de juntar.');
+  if(r.neighbor>=3)out.push('👀 Vários erros foram na tecla vizinha. Use as teclas pretas como guia: Dó fica à esquerda do grupo de 2 pretas, Fá à esquerda do grupo de 3.');
+  if(r.deltas.length>=5){const avg=r.deltas.reduce((a,b)=>a+b,0)/r.deltas.length;
+    if(avg>0.08)out.push(`⏱️ Você está atrasando, em média ${Math.round(avg*1000)} ms. Ligue o metrônomo e toque no clique.`);
+    else if(avg<-0.08)out.push(`⏱️ Você está adiantando, em média ${Math.round(-avg*1000)} ms. Espere o bloco encostar na linha.`);
+    else if(r.perfect/r.deltas.length>0.6)out.push('🥁 Seu ritmo está ótimo: a maioria das notas veio na hora certa.');}
+  if(pct<70&&S.speed>0.5)out.push(`🐢 Diminua a velocidade (para ${Math.round(S.speed*70)}%) e marque o trecho difícil com 🔁 Trecho.`);
+  if(!out.length)out.push(pct>=80?'👏 Muito bem! Repita mais uma vez para fixar.':'💪 Repita com calma. A precisão vem antes da velocidade.');
+  return out.slice(0,3)}
 /* ---------- Interface ---------- */
 let toastT=0;function toast(s,ms=2500){const m=$('#msg');m.textContent=s;m.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>m.classList.remove('show'),ms)}
 function syncUI(){document.querySelectorAll('#modeSeg button').forEach(b=>b.classList.toggle('on',b.dataset.v===S.mode));
@@ -401,11 +511,11 @@ function syncUI(){document.querySelectorAll('#modeSeg button').forEach(b=>b.clas
   const p=Math.round(S.speed*100)+'%';$('#speedBtn').textContent=(S.speed<1?'🐢 ':'🐇 ')+p;$('#spdTxt').textContent=p;$('#spd').value=S.speed;
   $('#cMetro').checked=S.metro;$('#cProg').checked=S.prog;
   const lb=$('#loopBtn');lb.classList.toggle('on',S.loopA!==null);lb.textContent=S.loopA===null?'🔁 Trecho':S.loopB===null?'🔁 Marcar fim':`🔁 ${fmt(S.loopA)}–${fmt(S.loopB)}`;
-  $('#cPart').checked=S.staff;$('#cNames').checked=S.names;$('#cSound').checked=S.sound;$('#cOther').checked=S.autoOther;$('#sens').value=S.sens;}
+  $('#cPart').checked=S.staff;$('#cNames').checked=S.names;$('#cSound').checked=S.sound;$('#cOther').checked=S.autoOther;$('#sens').value=S.sens;$('#cStrict').checked=S.strict;$('#modeSeg').style.display=$('#handSeg').style.display=S.lesson?'none':'flex';$('#introMic').textContent=S.mic?'🎤 Microfone ligado ✓':'🎤 Ligar microfone';}
 function play(){audio();if(S.t>=S.cur.duration)restart();S.playing=!S.playing;S.playing?getWake():relWake();$('#end').style.display='none';syncUI()}
-function restart(){S.hits=S.miss=0;S.combo=S.maxCombo=0;S.passHits=S.passMiss=0;S.laps=0;seek(S.loopA!==null&&S.loopB!==null?S.loopA:-2);getWake();$('#end').style.display='none'}
+function restart(){S.hits=S.miss=0;newRun();S.combo=S.maxCombo=0;S.passHits=S.passMiss=0;S.laps=0;seek(S.loopA!==null&&S.loopB!==null?S.loopA:-2);getWake();$('#end').style.display='none'}
 $('#playBtn').onclick=play;$('#restartBtn').onclick=()=>{restart();S.playing=true;audio();syncUI()};$('#againBtn').onclick=()=>{restart();S.playing=true;audio();syncUI()};
-document.querySelectorAll('#modeSeg button').forEach(b=>b.onclick=()=>{S.mode=b.dataset.v;seek(S.t);syncUI();save();toast(S.mode==='wait'?'Modo Esperar: a música para até você tocar a nota certa.':'Modo Assistir: a música segue no ritmo.')});
+document.querySelectorAll('#modeSeg button').forEach(b=>b.onclick=()=>{S.mode=b.dataset.v;S.hits=S.miss=0;newRun();seek(S.t);syncUI();save();toast({wait:'Esperar: a música para até você tocar a nota certa.',watch:'Assistir: veja e ouça a música no ritmo.',rhythm:'Ritmo: a música não para — toque na hora certa!'}[S.mode])});
 document.querySelectorAll('#handSeg button').forEach(b=>b.onclick=()=>{if(b.dataset.v!=='B'&&!S.cur.notes.some(n=>n.hand===b.dataset.v)){toast('Esta música não tem notas para essa mão.');return}
   S.hand=b.dataset.v;computeGroups();layoutKeys();syncUI();save()});
 $('#micBtn').onclick=()=>{S.mic?stopMic():startMic()};
@@ -416,26 +526,141 @@ $('#loopBtn').onclick=()=>{const t=Math.max(0,S.t);
 $('#fsBtn').onclick=()=>{try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().then(()=>{try{screen.orientation.lock('landscape').catch(()=>{})}catch(e){}}).catch(()=>toast('Tela cheia não disponível aqui.'))}catch(e){toast('Tela cheia não disponível aqui.')}};
 $('#cMetro').onchange=e=>{S.metro=e.target.checked;audio();save()};$('#cProg').onchange=e=>{S.prog=e.target.checked;save()};
 $('#speedBtn').onclick=()=>$('#setSheet').classList.remove('hidden');$('#setBtn').onclick=()=>$('#setSheet').classList.remove('hidden');
-$('#songBtn').onclick=()=>{renderSongs();$('#songSheet').classList.remove('hidden')};
 document.querySelectorAll('.sheet').forEach(s=>s.addEventListener('click',e=>{if(e.target===s||e.target.hasAttribute('data-close'))s.classList.add('hidden')}));
 $('#spd').oninput=e=>{S.speed=+e.target.value;syncUI();save()};
 $('#cPart').onchange=e=>{S.staff=e.target.checked;resize();save()};$('#cNames').onchange=e=>{S.names=e.target.checked;save()};
-$('#cSound').onchange=e=>{S.sound=e.target.checked;save()};$('#cOther').onchange=e=>{S.autoOther=e.target.checked;save()};$('#sens').oninput=e=>{S.sens=+e.target.value;save()};
+$('#cSound').onchange=e=>{S.sound=e.target.checked;save()};$('#cOther').onchange=e=>{S.autoOther=e.target.checked;save()};$('#sens').oninput=e=>{S.sens=+e.target.value;save()};$('#cStrict').onchange=e=>{S.strict=e.target.checked;save()};
 $('#seek').oninput=e=>{seek(e.target.value/100*S.cur.duration)};
 function renderSongs(){const L=$('#songList');L.innerHTML='';S.songs.forEach((s,i)=>{const d=document.createElement('div');d.className='songItem'+(s===S.cur?' cur':'');
   const b=S.best[s.title],st=b?stars(b):0,lv=['','Fácil','Médio','Difícil'][s.level];
   d.innerHTML=`<span>${s.builtin?'🎼':'🎹'} ${s.title.replace(/[<>&]/g,'')}<br><em>${lv} · ${fmt(s.duration)} · ${s.notes.length} notas${b?` · recorde ${b}%`:''}</em></span><b style="color:#ffd166;letter-spacing:2px">${'★'.repeat(st)}<span style="opacity:.2">${'★'.repeat(3-st)}</span></b>`;
   if(!s.builtin){const x=document.createElement('button');x.className='del';x.textContent='Apagar';x.onclick=ev=>{ev.stopPropagation();S.songs.splice(i,1);if(S.cur===s)selectSong(S.songs[0]);save();renderSongs()};d.appendChild(x)}
-  d.onclick=()=>{selectSong(s);$('#songSheet').classList.add('hidden')};L.appendChild(d)})}
+  d.onclick=()=>{exitLesson();selectSong(s);showPlayer()};L.appendChild(d)})}
 $('#importBtn').onclick=()=>$('#fileIn').click();
 $('#fileIn').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;
-  try{const s=parseMidi(await f.arrayBuffer(),f.name.replace(/\.(mid|midi)$/i,''));S.songs.push(s);S.hand='B';selectSong(s);
-    $('#songSheet').classList.add('hidden');const hs=new Set(s.notes.map(n=>n.hand));toast(`“${s.title}” importada: ${s.notes.length} notas`+(hs.size>1?', mãos separadas.':'.'),3500)}
+  try{const s=parseMidi(await f.arrayBuffer(),f.name.replace(/\.(mid|midi)$/i,''));S.songs.push(s);S.hand='B';S.rec.imports++;exitLesson();selectSong(s);renderSongs();showPlayer();checkBadges();const hs=new Set(s.notes.map(n=>n.hand));toast(`“${s.title}” importada: ${s.notes.length} notas`+(hs.size>1?', mãos separadas.':'.'),3500)}
   catch(err){toast('Não consegui ler o arquivo: '+err.message,4000)}};
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&S.playing){S.playing=false;syncUI()}if(!document.hidden&&S.playing)getWake()});
 window.addEventListener('resize',()=>{resize()});
-load();resize();syncUI();requestAnimationFrame(frame);
-if(innerHeight>innerWidth&&S.keys&&S.keys.nWhite>14)setTimeout(()=>toast('Dica: deite o celular para as teclas ficarem maiores.',3500),600);
+
+/* ---------- Trilha de aulas ---------- */
+const PASS=70;
+const PLANETS=[
+ {id:'p1',name:'Planeta Teclado',emoji:'🪐',color:'#4da3ff',sub:'As teclas brancas com a mão direita',lessons:[
+  {t:'Encontre o Dó',keys:['C4'],hand:'R',bpm:70,rh:'C4:2 C4:2 C4:2 C4:2',
+   intro:'As teclas pretas vêm em grupos de <b>2</b> e de <b>3</b>. O <b>Dó</b> é a tecla branca logo à esquerda do grupo de 2 pretas. Toque com o polegar da mão direita (dedo 1).'},
+  {t:'Dó, Ré, Mi',keys:['C4','D4','E4'],hand:'R',bpm:76,rh:'C4:1 D4:1 E4:2 E4:1 D4:1 C4:2 C4:1 D4:1 E4:1 D4:1 C4:4',
+   intro:'<b>Ré</b> fica entre as duas teclas pretas e <b>Mi</b> logo depois. Use os dedos 1, 2 e 3: um dedo para cada tecla.'},
+  {t:'Fá e Sol',keys:['C4','D4','E4','F4','G4'],hand:'R',bpm:76,rh:'C4:1 D4:1 E4:1 F4:1 G4:2 G4:1 F4:1 E4:1 D4:1 C4:2 E4:1 G4:1 E4:1 C4:2',
+   intro:'<b>Fá</b> é a tecla branca à esquerda do grupo de 3 pretas, e <b>Sol</b> vem logo depois. Agora os 5 dedos trabalham: Dó = 1, Ré = 2, Mi = 3, Fá = 4, Sol = 5.'},
+  {t:'Melodia dos 5 dedos',keys:['C4','D4','E4','F4','G4'],hand:'R',bpm:84,rh:'E4:1 F4:1 G4:2 G4:1 F4:1 E4:2 D4:1 E4:1 F4:1 D4:1 C4:4 E4:1 G4:1 F4:1 D4:1 E4:1 C4:1 D4:2 C4:4',
+   intro:'Uma melodia que usa só as 5 notas que você já conhece. A mão fica parada: cada dedo cuida da sua tecla.'},
+  {t:'Brilha, Brilha (1ª parte)',keys:['C4','D4','E4','F4','G4','A4'],hand:'R',bpm:84,rh:'C4:1 C4:1 G4:1 G4:1 A4:1 A4:1 G4:2 F4:1 F4:1 E4:1 E4:1 D4:1 D4:1 C4:2',
+   intro:'Sua primeira música! Ela traz uma nota nova, o <b>Lá</b>, logo depois do Sol: estique o dedo 5 para alcançá-lo.'}]},
+ {id:'p2',name:'Planeta Grave',emoji:'🌑',color:'#ffa94d',sub:'A mão esquerda entra em ação',lessons:[
+  {t:'Dó grave',keys:['C3'],hand:'L',bpm:70,lh:'C3:2 C3:2 C3:2 C3:2',
+   intro:'Agora a <b>mão esquerda</b>. O Dó grave fica 7 teclas brancas à esquerda do Dó do meio. Toque com o mindinho (dedo 5).'},
+  {t:'Subindo com a esquerda',keys:['C3','D3','E3','F3','G3'],hand:'L',bpm:76,lh:'C3:1 D3:1 E3:1 F3:1 G3:2 F3:1 E3:1 D3:1 C3:4',
+   intro:'Na mão esquerda os números ficam ao contrário: o mindinho (5) fica no Dó e o polegar (1) no Sol.'},
+  {t:'Baixos Dó e Sol',keys:['C3','G3'],hand:'L',bpm:80,lh:'C3:2 G3:2 C3:2 G3:2 C3:2 G3:2 C3:4',
+   intro:'Muitas músicas usam só duas notas na mão esquerda. Alterne Dó (dedo 5) e Sol (dedo 1) sem olhar para a mão.'},
+  {t:'Ode à Alegria: mão esquerda',song:'ode',hand:'L',speed:0.8,keys:['G2','C3'],
+   intro:'O app toca a melodia e você faz o acompanhamento com a esquerda. Note o <b>Sol grave</b>, abaixo do Dó grave.'}]},
+ {id:'p3',name:'Planeta Duo',emoji:'💫',color:'#b98cff',sub:'As duas mãos juntas',lessons:[
+  {t:'Revezando as mãos',keys:['C3','D3','E3','C4','D4','E4'],hand:'B',bpm:76,rh:'C4:1 D4:1 E4:2 r:4 E4:1 D4:1 C4:2 r:4',lh:'r:4 C3:1 D3:1 E3:2 r:4 E3:1 D3:1 C3:2',
+   intro:'Primeiro a direita, depois a esquerda. É a mesma melodia nas duas mãos, uma de cada vez.'},
+  {t:'Juntas pela primeira vez',keys:['C3','C4','E4','G4'],hand:'B',bpm:72,rh:'C4:2 E4:2 G4:2 E4:2 C4:4',lh:'C3:4 C3:4 C3:4',
+   intro:'A esquerda segura um Dó longo enquanto a direita anda. Quando duas notas chegam juntas, toque as duas ao mesmo tempo.'},
+  {t:'Ode à Alegria: duas mãos',song:'ode',hand:'B',speed:0.7,keys:['C3','G2','C4','D4','E4','F4','G4'],
+   intro:'A música completa com as duas mãos. Se ficar difícil, volte e treine uma mão de cada vez.'}]},
+ {id:'p4',name:'Planeta Ritmo',emoji:'🥁',color:'#3ddc84',sub:'Tocar na hora certa',lessons:[
+  {t:'Notas longas e curtas',keys:['C4','E4','G4','C5'],hand:'R',bpm:72,mode:'rhythm',rh:'C4:1 C4:1 C4:2 E4:1 E4:1 E4:2 G4:1 G4:1 G4:2 C5:4',
+   intro:'No modo <b>Ritmo</b> a música não para. A nota curta dura 1 clique do metrônomo e a longa dura 2. Toque quando o bloco encostar na linha.'},
+  {t:'Notas rápidas',keys:['C4','D4','E4','F4','G4'],hand:'R',bpm:66,mode:'rhythm',rh:'C4:.5 D4:.5 E4:1 E4:.5 F4:.5 G4:1 G4:.5 F4:.5 E4:.5 D4:.5 C4:2',
+   intro:'Agora cabem duas notas em cada clique. Conte “um-e, dois-e” e mantenha o pulso firme.'},
+  {t:'Parabéns a Você no ritmo',song:'parabens',hand:'R',mode:'rhythm',speed:0.8,keys:['G4','A4','B4','C5','D5','E5','F5','G5'],
+   intro:'Uma música que você conhece de ouvido! O ritmo pontuado do começo (“Pa-ra-béns”) é curto e rápido.'}]},
+ {id:'p5',name:'Planeta Sombra',emoji:'🌘',color:'#ff7aa8',sub:'As teclas pretas',lessons:[
+  {t:'Fá sustenido',keys:['D4','F#4','G4','A4'],hand:'R',bpm:76,rh:'G4:1 F#4:1 G4:2 A4:1 G4:1 F#4:1 G4:1 D4:2 G4:4',
+   intro:'O <b>sustenido (♯)</b> é a tecla preta logo à direita da nota. <b>Fá♯</b> fica entre Fá e Sol.'},
+  {t:'Ré sustenido',keys:['A4','B4','C5','D5','D#5','E5'],hand:'R',bpm:84,rh:'E5:1 D#5:1 E5:1 D#5:1 E5:1 B4:1 D5:1 C5:1 A4:4',
+   intro:'<b>Ré♯</b> é a tecla preta entre Ré e Mi. Este é o começo de uma das músicas mais famosas do piano.'},
+  {t:'Für Elise: início',song:'elise',hand:'B',speed:0.6,keys:['E2','A2','E3','A3','D#5','E5'],
+   intro:'Beethoven com as duas mãos! A esquerda faz arpejos (notas em sequência). Comece devagar.'}]},
+ {id:'p6',name:'Planeta Harmonia',emoji:'🌟',color:'#ffd166',sub:'Acordes',lessons:[
+  {t:'Acorde de Dó',keys:['C4','E4','G4'],hand:'R',bpm:66,rh:'C4+E4+G4:2 r:2 C4+E4+G4:2 r:2 C4+E4+G4:4',
+   intro:'Um <b>acorde</b> são notas tocadas juntas. Dó maior = Dó + Mi + Sol, com os dedos 1, 3 e 5. Pelo microfone, pode tocar as três juntas ou uma de cada vez.'},
+  {t:'Dó, Fá e Sol',keys:['B3','C4','D4','E4','F4','G4','A4'],hand:'R',bpm:66,rh:'C4+E4+G4:2 C4+F4+A4:2 B3+D4+G4:2 C4+E4+G4:2 C4+E4+G4:2 C4+F4+A4:2 B3+D4+G4:2 C4+E4+G4:2',
+   intro:'Com quase nenhum movimento da mão você troca entre 3 acordes: Dó (Dó-Mi-Sol), Fá (Dó-Fá-Lá) e Sol (Si-Ré-Sol). Eles acompanham milhares de músicas.'},
+  {t:'Brilha, Brilha com acordes',keys:['B2','C3','D3','E3','F3','G3','A3'],hand:'B',bpm:72,
+   rh:'C4:1 C4:1 G4:1 G4:1 A4:1 A4:1 G4:2 F4:1 F4:1 E4:1 E4:1 D4:1 D4:1 C4:2',lh:'C3+E3+G3:4 C3+F3+A3:2 C3+E3+G3:2 C3+F3+A3:2 C3+E3+G3:2 B2+D3+G3:2 C3+E3+G3:2',
+   intro:'A grande final: melodia na direita e os acordes que você aprendeu na esquerda. Você está tocando piano de verdade!'}]}];
+const LESSONS=[];PLANETS.forEach(P=>P.lessons.forEach((L,i)=>{L.id=P.id+'-'+(i+1);L.planet=P;L.idx=LESSONS.length;LESSONS.push(L)}));
+const passedL=L=>(S.done[L.id]||0)>=PASS;
+const unlocked=L=>L.idx===0||passedL(LESSONS[L.idx-1]);
+const lessonAfter=L=>LESSONS[L.idx+1]||null;
+function lessonSong(L){if(L.song){const s=SONG[L.song]();s.title=L.t;return s}return buildSong(L.t,L.bpm||80,L.rh||'',L.lh||'')}
+function openLesson(L){if(!L)return;if(!S.lesson)S.backup={mode:S.mode,hand:S.hand,speed:S.speed,metro:S.metro};
+  S.lesson=L;S.mode=L.mode||'wait';S.hand=L.hand||'R';S.speed=L.speed||(S.mode==='rhythm'?0.9:1);S.metro=S.mode==='rhythm';
+  selectSong(lessonSong(L));showPlayer();showIntro(L)}
+function exitLesson(){if(!S.lesson)return;Object.assign(S,S.backup||{});S.lesson=null;S.backup=null;S.loopA=S.loopB=null}
+function kbSvg(keys){const ms=keys.map(pn);let lo=Math.min(...ms),hi=Math.max(...ms);while(lo%12!==0)lo--;while(hi%12!==11)hi++;if(hi-lo<11)hi=lo+11;
+  const wh=[];for(let m=lo;m<=hi;m++)if(!isBlack(m))wh.push(m);const ww=34,W=wh.length*ww,Hh=118,on=new Set(ms);let o='';
+  wh.forEach((m,i)=>{const a=on.has(m);o+=`<rect x="${i*ww+1}" y="1" width="${ww-2}" height="${Hh-2}" rx="5" fill="${a?'#4da3ff':'#f4f5fa'}"/><text x="${i*ww+ww/2}" y="${Hh-10}" font-size="11" text-anchor="middle" font-weight="${a?800:500}" fill="${a?'#0b0f1a':'#7a809a'}">${nm(m)}</text>`});
+  for(let m=lo;m<=hi;m++)if(isBlack(m)){const i=wh.indexOf(m-1),a=on.has(m),x=(i+1)*ww-11;o+=`<rect x="${x}" y="1" width="22" height="70" rx="4" fill="${a?'#ff7aa8':'#1a1d29'}"/>`+(a?`<text x="${x+11}" y="62" font-size="9" text-anchor="middle" font-weight="800" fill="#0b0f1a">${nm(m)}</text>`:'')}
+  const el=$('#lessonKb');el.setAttribute('viewBox',`0 0 ${W} ${Hh}`);el.setAttribute('width',Math.min(W,340));el.innerHTML=o}
+function showIntro(L){$('#introPlanet').textContent=`${L.planet.emoji} ${L.planet.name} · Lição ${L.id.split('-')[1]} de ${L.planet.lessons.length}`;
+  $('#introTitle').textContent=L.t;$('#introText').innerHTML=L.intro;kbSvg(L.keys);
+  $('#introHow').innerHTML=(S.mode==='rhythm'?'🥁 Modo Ritmo com metrônomo. ':'⏸ A música espera você acertar cada nota. ')+(S.mic?'🎤 Microfone ligado.':'Ligue o 🎤 microfone para o app ouvir seu piano, ou toque nas teclas da tela.')+` Faça ${PASS}% para liberar a próxima.`;
+  $('#introSheet').classList.remove('hidden')}
+$('#introMic').onclick=async()=>{if(!S.mic)await startMic();showIntro(S.lesson)};
+$('#introGo').onclick=()=>{$('#introSheet').classList.add('hidden');restart();S.playing=true;audio();getWake();syncUI()};
+function renderMap(){const el=$('#tab-trilha');let o='';const curL=LESSONS.find(L=>unlocked(L)&&!passedL(L));const X=[50,26,50,74];
+  PLANETS.forEach(P=>{const d=P.lessons.filter(passedL).length,lock=!unlocked(P.lessons[0]);
+    o+=`<div class="planet${lock?' locked':''}" style="--pc:${P.color}"><div class="orb">${P.emoji}</div><div><h3>${P.name}</h3><p>${P.sub}</p></div><div class="cnt">${lock?'🔒':d+'/'+P.lessons.length}</div></div><div class="path">`;
+    P.lessons.forEach((L,i)=>{const u=unlocked(L),b=S.done[L.id]||0,cur=L===curL;
+      o+=`<div class="node${u?'':' locked'}${cur?' cur':''}" style="--pc:${P.color};margin-left:calc(${X[i%4]}% - 55px)">${cur?'<span class="go">COMEÇAR</span>':''}<button class="dot" data-l="${L.idx}">${u?(passedL(L)?'✓':i+1):'🔒'}</button><div class="st">${b?'★'.repeat(stars(b))+'<span style="opacity:.25">'+'★'.repeat(3-stars(b))+'</span>':''}</div><div class="lbl">${L.t}</div></div>`});
+    o+='</div>'});
+  el.innerHTML=o;el.querySelectorAll('.dot').forEach(b=>b.onclick=()=>{const L=LESSONS[+b.dataset.l];if(!unlocked(L)){toast2('Conclua a lição anterior para liberar esta. 🔒');return}openLesson(L)});
+  const c=el.querySelector('.node.cur');if(c&&!renderMap.did){renderMap.did=1;setTimeout(()=>c.scrollIntoView({block:'center'}),50)}}
+/* ---------- Metas, sequência e conquistas ---------- */
+function dayKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function monday(d){const x=new Date(d);x.setHours(12,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x}
+function weekDays(m){return[...Array(7)].map((_,i)=>{const x=new Date(m);x.setDate(m.getDate()+i);return x})}
+const secs=d=>S.log[dayKey(d)]||0;
+function weekMet(m){return weekDays(m).filter(d=>secs(d)>=S.goal.min*60).length>=S.goal.days}
+function streak(){let n=0,m=monday(new Date());if(weekMet(m))n++;for(let i=0;i<104;i++){m=new Date(m);m.setDate(m.getDate()-7);if(weekMet(m))n++;else break}return n}
+const BADGES=[['🎹','Primeira nota',()=>S.rec.hits>0],['⭐','Primeira lição',()=>LESSONS.some(passedL)],['🪐','Explorador',()=>PLANETS[0].lessons.every(passedL)],
+ ['🌟','Sistema solar',()=>LESSONS.every(passedL)],['🎯','3 estrelas',()=>Object.values(S.done).concat(Object.values(S.best)).some(p=>p>=95)],
+ ['🔥','50 seguidas',()=>S.rec.combo>=50],['📅','Meta batida',()=>streak()>=1],['🗓️','4 semanas',()=>streak()>=4],['🏆','8 semanas',()=>streak()>=8],
+ ['⏱️','1 hora de prática',()=>Object.values(S.log).reduce((a,b)=>a+b,0)>=3600],['🎼','Sua música',()=>S.rec.imports>0]];
+function checkBadges(){BADGES.forEach(([e,n,f])=>{if(!S.badges[n]&&f()){S.badges[n]=dayKey(new Date());save();toast(`${e} Conquista desbloqueada: ${n}!`,3500)}})}
+function ring(p,sz=30){return `<svg width="${sz}" height="${sz}" viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" fill="none" stroke="#2a3150" stroke-width="5"/><circle cx="18" cy="18" r="15" fill="none" stroke="#3ddc84" stroke-width="5" stroke-linecap="round" stroke-dasharray="${Math.min(1,p)*94.2} 94.2" transform="rotate(-90 18 18)"/></svg>`}
+function renderToday(){const t=secs(new Date())/60;$('#todayPill').innerHTML=ring(t/S.goal.min)+`Hoje ${Math.floor(t)}/${S.goal.min} min`}
+function renderProg(){const m=monday(new Date()),days=weekDays(m),today=dayKey(new Date());const DN=['S','T','Q','Q','S','S','D'];
+  const met=days.filter(d=>secs(d)>=S.goal.min*60).length,st=streak(),tot=Object.values(S.log).reduce((a,b)=>a+b,0)/60;
+  let o=`<div class="box"><h3>Meta da semana</h3><div class="mut" style="margin-bottom:10px">${S.goal.min} min por dia, ${S.goal.days} dias por semana · <b style="color:var(--txt)">${Math.min(met,S.goal.days)} de ${S.goal.days}</b> ${met>=S.goal.days?'✅':''}</div><div class="week">`;
+  days.forEach((d,i)=>{const p=Math.min(100,secs(d)/(S.goal.min*60)*100);o+=`<div class="day${dayKey(d)===today?' today':''}"><i style="--p:${p}"><span>${p>=100?'✓':''}</span></i>${DN[i]}</div>`});
+  o+=`</div></div><div class="box" style="display:flex;align-items:center;gap:14px"><div style="font-size:44px">🔥</div><div><div class="big2">${st} ${st===1?'semana':'semanas'}</div><div class="mut">seguidas batendo a meta${st<8?` · ${8-st} para o troféu 🏆`:' · troféu conquistado!'}</div></div></div>`;
+  o+=`<div class="box"><h3>Seus números</h3><div class="stats"><div class="stat"><b>${Math.round(tot)} min</b><span class="mut">de prática</span></div><div class="stat"><b>${LESSONS.filter(passedL).length}/${LESSONS.length}</b><span class="mut">lições</span></div><div class="stat"><b>${S.rec.hits}</b><span class="mut">notas certas</span></div><div class="stat"><b>${S.rec.combo}</b><span class="mut">maior sequência</span></div></div></div>`;
+  o+=`<div class="box"><h3>Conquistas</h3><div class="badges">${BADGES.map(([e,n])=>`<div class="badge${S.badges[n]?'':' off'}"><b>${e}</b>${n}</div>`).join('')}</div></div>`;
+  o+=`<div class="box"><h3>Ajustar meta</h3><div class="mut">Minutos por dia</div><div class="goalRow" id="gMin">${[5,10,15,20,30].map(v=>`<button data-v="${v}" class="${S.goal.min===v?'on':''}">${v}</button>`).join('')}</div><div class="mut">Dias por semana</div><div class="goalRow" id="gDays">${[1,2,3,4,5,6,7].map(v=>`<button data-v="${v}" class="${S.goal.days===v?'on':''}">${v}</button>`).join('')}</div><p class="help">O progresso fica salvo neste aparelho e navegador.</p></div>`;
+  $('#tab-prog').innerHTML=o;
+  document.querySelectorAll('#gMin button').forEach(b=>b.onclick=()=>{S.goal.min=+b.dataset.v;save();renderProg();renderToday()});
+  document.querySelectorAll('#gDays button').forEach(b=>b.onclick=()=>{S.goal.days=+b.dataset.v;save();renderProg()});}
+/* ---------- Navegação ---------- */
+let curTab='trilha';
+function showTab(t){curTab=t;document.querySelectorAll('.tabbar button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
+  ['trilha','musicas','prog'].forEach(x=>$('#tab-'+x).classList.toggle('hidden',x!==t));
+  if(t==='trilha')renderMap();if(t==='musicas')renderSongs();if(t==='prog')renderProg();renderToday()}
+document.querySelectorAll('.tabbar button').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+function showPlayer(){$('#home').classList.add('hidden');$('#player').classList.remove('hidden');$('#end').style.display='none';requestAnimationFrame(()=>{resize();syncUI()});
+  if(innerHeight>innerWidth&&S.keys&&S.keys.nWhite>14&&!showPlayer.tip){showPlayer.tip=1;setTimeout(()=>toast('Dica: deite o celular para as teclas ficarem maiores.',3500),800)}}
+function showHome(){S.playing=false;relWake();$('#introSheet').classList.add('hidden');$('#player').classList.add('hidden');$('#home').classList.remove('hidden');const wasL=!!S.lesson;exitLesson();save();showTab(wasL?'trilha':curTab)}
+$('#backBtn').onclick=showHome;$('#mapBtn').onclick=showHome;
+function toast2(s){toast(s)}
+load();resize();syncUI();showTab('trilha');requestAnimationFrame(frame);checkBadges();
+setInterval(()=>{if(!$('#home').classList.contains('hidden'))renderToday()},15000);
 </script>
 </body>
 </html>
